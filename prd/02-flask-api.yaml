@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-api
+  namespace: dev
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: deploy-api
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: deploy-api
+    spec:
+      containers:
+        - image: 618118007154.dkr.ecr.us-east-1.amazonaws.com/flaskapi:__TAG__
+          name: deploy-api
+          resources:
+            requests:
+              memory: "200Mi"
+              cpu: "50m"
+          ports:
+            - containerPort: 5000
+              name: deploy-api
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 90
+            periodSeconds: 10
+            timeoutSeconds: 10
+            failureThreshold: 5
+          #Valores das variaveis de ambiente serao alteradas no Deploy
+          #env:
+          #  - name: ALLOWED_HOSTS
+          #    value: "localhost,deploy-api-dev-env.us-east-2.elasticbeanstalk.com,visionapi-dev.mones.com.br.s3-website.us-east-2.amazonaws.com,deploy-api-dev.omotor.com.br,visionapidev.us-east-2.elasticbeanstalk.com"
+            
