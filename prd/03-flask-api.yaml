@@ -58,4 +58,10 @@ spec:
                 secretKeyRef:
                   name: deploy-api-prd
                   key: dbschema
-            
+            - name: APP_USER
+              value: devops
+            - name: APP_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: deploy-api-prd
+                  key: apppass      
