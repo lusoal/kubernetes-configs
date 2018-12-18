@@ -30,7 +30,7 @@ spec:
               name: deploy-api
           livenessProbe:
             httpGet:
-              path: /health
+              path: /api/health
               port: 5000
             initialDelaySeconds: 90
             periodSeconds: 10
